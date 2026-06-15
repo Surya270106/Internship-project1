@@ -1,185 +1,148 @@
 # Employee Sentiment Analysis
 
-## 📋 Project Overview
+## Project Overview
 
-This project analyzes an unlabeled dataset of employee email messages (from the Enron corpus) to assess **sentiment and engagement**. The analysis pipeline works from raw data to derive actionable insights using **Natural Language Processing (NLP)** and **statistical analysis** techniques.
+This project works with an unlabeled dataset of employee emails (Enron corpus) to figure out the overall sentiment and engagement levels. I used Python with TextBlob for the NLP side and scikit-learn for the regression model.
 
-## 🎯 Project Objectives
+The dataset (`test.csv`) has around 2,191 messages with columns: Subject, body, date, and from (sender email).
 
-| Task | Description |
-|------|-------------|
-| **Task 1** | **Sentiment Labeling** — Automatically classify each message as Positive, Negative, or Neutral |
-| **Task 2** | **Exploratory Data Analysis (EDA)** — Analyze and visualize data structure, distributions, and trends |
-| **Task 3** | **Monthly Sentiment Scoring** — Compute monthly sentiment scores per employee (+1, -1, 0) |
-| **Task 4** | **Employee Ranking** — Rank top 3 positive and negative employees per month |
-| **Task 5** | **Flight Risk Identification** — Flag employees with ≥4 negative messages in any rolling 30-day window |
-| **Task 6** | **Predictive Modeling** — Build a linear regression model to analyze sentiment trends |
+## What This Project Does
+
+1. **Sentiment Labeling** - Labels each message as Positive, Negative, or Neutral using TextBlob
+2. **EDA** - Explores the data, checks distributions, trends over time, etc.
+3. **Monthly Scoring** - Calculates a sentiment score per employee per month (+1 for positive, -1 for negative, 0 for neutral)
+4. **Employee Ranking** - Picks out the top 3 positive and top 3 negative employees each month
+5. **Flight Risk** - Flags anyone who sent 4+ negative emails in a rolling 30-day window
+6. **Linear Regression** - Builds a model using message metadata to see what features correlate with sentiment
 
 ---
 
-## 🛠️ Setup Instructions
+## How to Set Up
 
-### Prerequisites
+**You need Python 3.8 or higher.**
 
-- **Python 3.8+** (tested with Python 3.14)
-- **pip** (Python package manager)
-
-### Installation
-
-1. **Clone or extract the repository:**
+1. Clone the repo:
    ```bash
-   git clone <repository-url>
-   cd employee-sentiment-analysis
+   git clone https://github.com/Surya270106/Internship-project1.git
+   cd Internship-project1
    ```
 
-2. **Install required packages:**
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Download NLTK data (required for TextBlob):**
+3. Download the NLTK data that TextBlob needs:
    ```bash
    python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('averaged_perceptron_tagger'); nltk.download('averaged_perceptron_tagger_eng'); nltk.download('brown'); nltk.download('movie_reviews'); nltk.download('wordnet')"
    ```
 
-4. **Ensure the dataset file `test.csv` is in the project root directory.**
+4. Make sure `test.csv` is in the root folder (it should already be there).
 
 ---
 
-## 🚀 Usage
+## How to Run
 
-### Run the Full Analysis Pipeline
-
+**Option 1 - Run the Python script:**
 ```bash
 python main_analysis.py
 ```
+This runs everything end-to-end and saves all the output files + visualizations.
 
-This single command executes all 6 tasks and generates:
-- Labeled dataset (`test_labeled.csv`)
-- Monthly scores (`monthly_scores.csv`)
-- Employee rankings (`top_positive_employees.csv`, `top_negative_employees.csv`)
-- Flight risk list (`flight_risk_employees.csv`)
-- All visualizations in the `visualizations/` folder
-
-### Alternative: Run as Jupyter Notebook
-
+**Option 2 - Use the Jupyter Notebook:**
 ```bash
 jupyter notebook Employee_Sentiment_Analysis.ipynb
 ```
+Same analysis but with inline charts and step-by-step commentary.
 
-The notebook contains the same analysis with inline visualizations, commentary, and observations.
+After running, you'll get:
+- `test_labeled.csv` - the dataset with sentiment labels added
+- `monthly_scores.csv` - monthly scores per employee
+- `top_positive_employees.csv` / `top_negative_employees.csv` - rankings
+- `flight_risk_employees.csv` - flagged employees
+- `visualizations/` folder with 13 charts
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
-employee-sentiment-analysis/
-│
-├── test.csv                          # Original unlabeled dataset
-├── main_analysis.py                  # Main analysis script (runs all tasks)
-├── sentiment_analysis.py             # Core NLP & analysis functions
-├── visualizations_generator.py       # Visualization generation utilities
-├── Employee_Sentiment_Analysis.ipynb # Jupyter Notebook (main deliverable)
-├── requirements.txt                  # Python dependencies
-├── README.md                         # This file
-├── .env.example                      # Environment variable template
-│
-├── visualizations/                   # Generated charts and plots
-│   ├── 01_sentiment_distribution.png
-│   ├── 02_sentiment_over_time.png
-│   ├── 03_polarity_distribution.png
-│   ├── 04_messages_per_employee.png
-│   ├── 05_sentiment_by_employee.png
-│   ├── 06_day_of_week.png
-│   ├── 07_message_length_by_sentiment.png
-│   ├── 08_wordclouds.png
-│   ├── 09_monthly_scores_heatmap.png
-│   ├── 10_employee_rankings.png
-│   ├── 11_flight_risk_employees.png
-│   ├── 12_regression_results.png
-│   └── 13_residuals.png
-│
-└── Output CSV Files (generated):
-    ├── test_labeled.csv              # Dataset with sentiment labels
-    ├── monthly_scores.csv            # Monthly sentiment scores
-    ├── top_positive_employees.csv    # Top positive rankings
-    ├── top_negative_employees.csv    # Top negative rankings
-    └── flight_risk_employees.csv     # Flight risk employees
+Internship-project1/
+|-- test.csv                          # raw dataset
+|-- main_analysis.py                  # runs the full pipeline
+|-- sentiment_analysis.py             # helper functions (labeling, scoring, etc.)
+|-- visualizations_generator.py       # all the plotting code
+|-- Employee_Sentiment_Analysis.ipynb  # notebook version (main deliverable)
+|-- requirements.txt
+|-- README.md
+|-- .env.example
+|-- visualizations/                   # output charts (13 PNGs)
+|-- test_labeled.csv                  # generated output
+|-- monthly_scores.csv                # generated output
+|-- top_positive_employees.csv        # generated output
+|-- top_negative_employees.csv        # generated output
+|-- flight_risk_employees.csv         # generated output
 ```
 
 ---
 
-## 🔬 Methodology
+## Methodology
 
-### Task 1: Sentiment Labeling
-- **Library:** TextBlob (built on NLTK)
-- **Approach:** Combined Subject + Body text → TextBlob polarity analysis
-- **Thresholds:**
-  - Polarity > 0.1 → **Positive**
-  - Polarity < -0.1 → **Negative**
-  - Otherwise → **Neutral**
+### Sentiment Labeling
+I used TextBlob which gives a polarity score from -1 to +1 for any text. I combined the Subject and body fields for better context, then classified based on thresholds:
+- Polarity > 0.1 = Positive
+- Polarity < -0.1 = Negative
+- Everything else = Neutral
 
-### Task 2: EDA
-- Examined dataset structure, missing values, and data types
-- Analyzed sentiment distribution across categories
-- Investigated temporal trends (monthly, day-of-week)
-- Explored employee activity patterns
-- Generated word clouds and statistical visualizations
+I picked 0.1 as the cutoff (instead of 0) to avoid labeling very mildly worded emails as positive/negative when they're basically neutral.
 
-### Task 3: Monthly Scoring
-- **Positive message:** +1
-- **Negative message:** -1
-- **Neutral message:** 0
-- Scores aggregated monthly per employee, resetting each month
+### EDA
+Looked at the overall shape of the data, checked for missing values, plotted sentiment distributions, tracked trends over time (monthly), broke down activity by day of week, compared message lengths across sentiment types, and generated word clouds to see what kind of language appears in each category.
 
-### Task 4: Employee Ranking
-- Sorted by monthly score (descending for positive, ascending for negative)
-- Ties broken alphabetically
-- Top 3 per category per month
+### Monthly Scoring
+Pretty straightforward - each positive message gets +1, negative gets -1, neutral gets 0. These are summed up per employee per month. The score resets every month.
 
-### Task 5: Flight Risk
-- **Criteria:** ≥4 negative messages within any rolling 30-day window
-- Uses a sliding window approach across all dates
-- Independent of calendar month boundaries
+### Employee Ranking
+For each month, I sorted employees by their monthly score. Top 3 highest = most positive, top 3 lowest = most negative. When there's a tie, I sorted alphabetically.
 
-### Task 6: Linear Regression
-- **Features:** message_length, word_count, subject_length, has_subject, day_of_week, is_weekend, month, exclamation_count, question_count, caps_ratio
-- **Target:** Polarity score (continuous)
-- **Library:** scikit-learn (LinearRegression with StandardScaler)
-- **Split:** 80% train / 20% test
-- **Metrics:** R², RMSE, MAE
+### Flight Risk
+The requirement says anyone with 4 or more negative messages in a 30-day span is a flight risk. I implemented this as a rolling window - for each employee, I go through their negative message dates and check if any 30-day window starting from each date contains 4+ negatives. This is independent of calendar months.
+
+### Linear Regression
+I engineered 10 features from the data (message length, word count, subject length, whether it has a subject, day of week, weekend flag, month, exclamation count, question mark count, uppercase ratio) and used them to predict the polarity score. Used scikit-learn's LinearRegression with StandardScaler, 80/20 train-test split.
 
 ---
 
-## 📊 Key Findings Summary
+## Results
 
-### Sentiment Distribution
-| Sentiment | Count | Percentage |
-|-----------|-------|------------|
-| Neutral   | 1,019 | 46.5%     |
-| Positive  | 976   | 44.5%     |
-| Negative  | 196   | 8.9%      |
+### Sentiment Breakdown
+| Sentiment | Count | % |
+|-----------|-------|---|
+| Neutral | 1,019 | 46.5% |
+| Positive | 976 | 44.5% |
+| Negative | 196 | 8.9% |
+
+Most emails are neutral or positive, which makes sense for workplace communication. Only about 9% came out as negative.
 
 ### Top 3 Positive Employees (Overall)
-| Rank | Employee | Total Score |
-|------|----------|-------------|
-| #1   | lydia.delgado@enron.com | 101 |
-| #2   | john.arnold@enron.com | 97 |
-| #3   | sally.beck@enron.com | 89 |
+| # | Employee | Total Score |
+|---|----------|-------------|
+| 1 | lydia.delgado@enron.com | 101 |
+| 2 | john.arnold@enron.com | 97 |
+| 3 | sally.beck@enron.com | 89 |
 
 ### Top 3 Negative Employees (Overall)
-| Rank | Employee | Total Score |
-|------|----------|-------------|
-| #1   | rhonda.denton@enron.com | 50 |
-| #2   | kayne.coulter@enron.com | 61 |
-| #3   | bobette.riner@ipgdirect.com | 72 |
+| # | Employee | Total Score |
+|---|----------|-------------|
+| 1 | rhonda.denton@enron.com | 50 |
+| 2 | kayne.coulter@enron.com | 61 |
+| 3 | bobette.riner@ipgdirect.com | 72 |
 
 ### Flight Risk Employees
-The following employees were flagged as flight risks (≥4 negative messages in a rolling 30-day window):
+6 employees got flagged:
 
-| Employee | Total Negatives | Max in 30-Day Window | Risk Window |
-|----------|----------------|---------------------|-------------|
+| Employee | Total Negatives | Max in 30 Days | Window |
+|----------|----------------|----------------|--------|
 | bobette.riner@ipgdirect.com | 21 | 6 | 2010-11-02 to 2010-12-02 |
 | johnny.palmer@enron.com | 18 | 4 | 2011-01-29 to 2011-02-28 |
 | lydia.delgado@enron.com | 28 | 6 | 2011-12-04 to 2012-01-03 |
@@ -187,54 +150,36 @@ The following employees were flagged as flight risks (≥4 negative messages in 
 | rhonda.denton@enron.com | 20 | 4 | 2010-12-18 to 2011-01-17 |
 | sally.beck@enron.com | 18 | 4 | 2010-06-16 to 2010-07-16 |
 
-### Model Performance (Linear Regression)
-| Metric | Training | Testing |
-|--------|----------|---------|
-| R² Score | 0.0489 | 0.0742 |
+### Regression Model
+| Metric | Train | Test |
+|--------|-------|------|
+| R2 | 0.0489 | 0.0742 |
 | RMSE | 0.2132 | 0.2285 |
 | MAE | 0.1523 | 0.1619 |
 
-**Note:** The low R² is expected since sentiment is primarily determined by text content, not structural metadata features. The model serves as a baseline showing which structural attributes (exclamation count, word count, caps ratio) correlate with sentiment.
-
-### Key Recommendations
-- Monitor flight risk employees closely for signs of disengagement
-- Investigate root causes of negative sentiment patterns
-- Consider implementing regular sentiment check-ins
-- Use sentiment trends to inform retention strategies
+The R2 is low, but that's expected - you can't really predict what someone *said* just from how long the email was or what day they sent it. The model does show that exclamation marks and word count have the strongest correlation with polarity, which is interesting.
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| pandas | ≥2.0 | Data manipulation and analysis |
-| numpy | ≥1.24 | Numerical computing |
-| matplotlib | ≥3.7 | Data visualization |
-| seaborn | ≥0.12 | Statistical data visualization |
-| textblob | ≥0.17 | NLP sentiment analysis |
-| scikit-learn | ≥1.3 | Machine learning (Linear Regression) |
-| wordcloud | ≥1.9 | Word cloud generation |
-| nltk | ≥3.8 | Natural Language Toolkit |
-| openpyxl | ≥3.1 | Excel file support |
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- textblob
+- scikit-learn
+- wordcloud
+- nltk
+- openpyxl
 
----
-
-## ⚙️ Environment Variables
-
-See `.env.example` for optional configuration. No API keys are required for this project as TextBlob runs locally.
+Full versions are in `requirements.txt`.
 
 ---
 
-## 📝 Notes
+## Notes
 
-- The sentiment analysis uses TextBlob which provides reliable results without requiring external API calls.
-- All visualizations are saved as high-resolution PNG files in the `visualizations/` directory.
-- The analysis is fully reproducible — running `main_analysis.py` from scratch will regenerate all outputs.
-- Random state is set to 42 for reproducible train/test splits.
-
----
-
-## 📄 License
-
-This project is for internal evaluation purposes only.
+- TextBlob runs entirely locally, no API keys needed.
+- All charts are saved as PNGs in `visualizations/`.
+- Random state is 42 for the train/test split so results are reproducible.
+- See `.env.example` for optional config (thresholds, file paths, etc.).
